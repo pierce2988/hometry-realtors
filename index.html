@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>H°METRY for Realtors</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --red:#ed2427;--red2:#c41f22;--dark:#15151c;--bg:#f5f5f7;--card:#fff;--line:#e8e8e8;
+  --muted:#888;--soft:#fff5f5;--green:#16a34a;--blue:#2563eb;--gold:#d97706;
+}
+body{font-family:Barlow,sans-serif;background:var(--bg);color:#111;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pg{display:none;min-height:100vh;flex-direction:column}
+.pg.on{display:flex;animation:up .28s ease}
+.wrap{max-width:1120px;margin:0 auto;width:100%;padding:0 24px}
+.narrow{max-width:620px}
+.nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:3px solid var(--red);padding:14px 0}
+.nav-in{display:flex;align-items:center;justify-content:space-between;max-width:1120px;margin:0 auto;padding:0 24px;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.wordmark{font-family:'Barlow Condensed',sans-serif;font-size:1.55rem;font-weight:800;color:#111;letter-spacing:.01em}
+.wordmark em{color:var(--red);font-style:normal}
+.brand-tag{font-size:.56rem;letter-spacing:.22em;color:#aaa;font-weight:800;text-transform:uppercase;margin-top:2px}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.nav-link{font-size:.84rem;font-weight:700;color:#666;cursor:pointer;padding:8px 6px}
+.nav-link:hover{color:var(--red)}
+.btn-ghost,.btn-pill{border-radius:999px;font-size:.84rem;font-weight:800;padding:10px 18px;cursor:pointer;transition:.15s}
+.btn-ghost{background:var(--soft);border:1.5px solid rgba(237,36,39,.2);color:var(--red)}
+.btn-pill{background:linear-gradient(135deg,var(--red),var(--red2));border:none;color:#fff;box-shadow:0 4px 14px rgba(237,36,39,.28)}
+.btn-pill:hover,.hero-primary:hover,.cta:hover{transform:translateY(-1px)}
+.hero{background:var(--dark);padding:70px 0 78px;position:relative;overflow:hidden}
+.hero:after{content:'';position:absolute;top:-110px;right:-90px;width:390px;height:390px;background:radial-gradient(circle,rgba(237,36,39,.42),transparent 70%)}
+.hero:before{content:'';position:absolute;bottom:-130px;left:-90px;width:320px;height:320px;background:radial-gradient(circle,rgba(237,36,39,.18),transparent 70%)}
+.hero-in{position:relative;z-index:2;text-align:center;max-width:900px;margin:0 auto;padding:0 24px}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.84);font-size:.67rem;font-weight:800;letter-spacing:.08em;padding:8px 16px;border-radius:30px;text-transform:uppercase}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:3.9rem;font-weight:800;color:#fff;line-height:1.02;margin:24px 0 0}
+.hero h1 em{color:var(--red);font-style:normal}
+.hero-sub{color:rgba(255,255,255,.68);font-size:1.08rem;line-height:1.6;margin:18px auto 0;max-width:680px}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap}
+.hero-primary,.hero-secondary{border-radius:14px;font-weight:800;font-size:1rem;padding:16px 30px;cursor:pointer;transition:.18s}
+.hero-primary{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none;box-shadow:0 8px 22px rgba(237,36,39,.32)}
+.hero-secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff}
+.sec{padding:64px 0}.sec.alt{background:#fff}
+.sec-eye{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);text-align:center;margin-bottom:10px}
+.sec-h{font-family:'Barlow Condensed',sans-serif;font-size:2.35rem;font-weight:800;color:#111;text-align:center;line-height:1.08;margin-bottom:12px}
+.sec-sub{font-size:.98rem;color:var(--muted);text-align:center;max-width:680px;margin:0 auto 40px;line-height:1.6}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card,.dcard{background:#fff;border:1.5px solid #f0f0f0;border-radius:18px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.card.hover{transition:.2s}.card.hover:hover{border-color:rgba(237,36,39,.3);box-shadow:0 6px 22px rgba(237,36,39,.1);transform:translateY(-2px)}
+.card-ico{width:50px;height:50px;border-radius:14px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px}
+.card h3{font-size:1.08rem;font-weight:800;color:#111;margin-bottom:7px}.card p{font-size:.88rem;color:var(--muted);line-height:1.55}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.step{background:#fff;border:1.5px solid #f0f0f0;border-radius:16px;padding:22px 18px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.step-n{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--red);line-height:.9;margin-bottom:8px}
+.step h4{font-size:.96rem;font-weight:800;margin-bottom:5px}.step p{font-size:.82rem;color:#999;line-height:1.5}
+.demo{background:var(--dark);border-radius:22px;padding:26px;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.16)}
+.demo:after{content:'';position:absolute;top:-70px;right:-70px;width:220px;height:220px;background:radial-gradient(circle,rgba(237,36,39,.35),transparent 70%)}
+.demo-top{position:relative;z-index:1;display:flex;align-items:center;gap:15px}.demo-av{width:66px;height:66px;border-radius:50%;background:rgba(237,36,39,.2);border:2px solid rgba(237,36,39,.42);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Barlow Condensed';font-size:1.7rem;font-weight:800}
+.demo-name{color:#fff;font-size:1.16rem;font-weight:800}.demo-sub{color:rgba(255,255,255,.58);font-size:.82rem;margin-top:2px}.demo-body{position:relative;z-index:1;color:rgba(255,255,255,.68);font-size:.88rem;line-height:1.55;margin-top:16px}
+.demo-box{position:relative;z-index:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:15px;margin-top:16px}
+.demo-box h4{color:#fff;font-size:.86rem;margin-bottom:8px}.demo-mini{display:flex;justify-content:space-between;color:rgba(255,255,255,.7);font-size:.8rem;padding:5px 0}.score{font-family:'Barlow Condensed';font-size:2rem;font-weight:800;color:#4ade80}
+.price-card{background:#fff;border:2px solid var(--red);border-radius:22px;padding:34px 30px;max-width:440px;margin:0 auto;box-shadow:0 12px 40px rgba(237,36,39,.14);position:relative;overflow:hidden}
+.price-flag{position:absolute;top:18px;right:-38px;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.1em;padding:6px 44px;transform:rotate(45deg);text-transform:uppercase}
+.price-name{font-family:'Barlow Condensed';font-size:1.6rem;font-weight:800}.price-amt{font-family:'Barlow Condensed';font-size:3.4rem;font-weight:800;color:var(--red);line-height:1;margin:10px 0 2px}.price-amt span{font-size:1rem;color:#aaa}
+.price-note{font-size:.8rem;color:#999;margin-bottom:20px}.price-feats{list-style:none;margin:0 0 24px}.price-feats li{display:flex;gap:10px;font-size:.9rem;color:#444;padding:7px 0;line-height:1.4}.price-feats li:before{content:'✓';color:var(--red);font-weight:900}
+.foot{background:var(--dark);color:rgba(255,255,255,.5);padding:44px 0 32px}.foot-disc{font-size:.76rem;line-height:1.7;margin-top:14px;max-width:780px}.foot-copy{font-size:.72rem;margin-top:22px;color:rgba(255,255,255,.3)}
+.fhdr{padding:16px 24px;display:flex;align-items:center;gap:14px;background:#fff;border-bottom:3px solid var(--red);flex-shrink:0}.bk{width:38px;height:38px;border-radius:11px;background:var(--soft);border:1.5px solid rgba(237,36,39,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--red)}
+.fbody{flex:1;padding:32px 24px 40px;background:var(--bg)}.fform{max-width:600px;margin:0 auto;width:100%}
+.eye{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:8px}.qh{font-family:'Barlow Condensed';font-size:2.1rem;font-weight:800;line-height:1.1;margin-bottom:7px}.qs{font-size:.9rem;color:var(--muted);margin-bottom:24px;line-height:1.55}
+.fl{font-size:.71rem;font-weight:800;color:#666;letter-spacing:.04em;text-transform:uppercase;margin-bottom:7px;display:block}.iw{margin-bottom:16px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,textarea,select{width:100%;background:#fff;border:2px solid var(--line);border-radius:12px;padding:13px 15px;color:#111;font-size:.97rem;font-weight:600;outline:none;transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,.04)}textarea{resize:vertical;min-height:96px;line-height:1.5}input:focus,textarea:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(237,36,39,.1)}
+.err,.ok{font-size:.84rem;font-weight:700;padding:11px 14px;border-radius:10px;margin-bottom:14px;display:none}.err.on,.ok.on{display:block}.err{background:var(--soft);border:1.5px solid rgba(237,36,39,.25);color:var(--red2)}.ok{background:#f0fdf4;border:1.5px solid rgba(74,222,128,.4);color:var(--green)}
+.cta,.cta-sec{width:100%;padding:16px;border-radius:13px;font-size:1rem;font-weight:800;cursor:pointer;transition:.2s}.cta{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;border:none;box-shadow:0 5px 18px rgba(237,36,39,.28);display:flex;align-items:center;justify-content:center;gap:9px}.cta-sec{background:#fff;border:2px solid var(--line);color:#111;margin-top:10px}.muted-link{background:none;border:none;color:#999;font-size:.84rem;cursor:pointer;padding:8px;text-align:center;width:100%;font-weight:700}
+.dash{display:flex;flex:1;min-height:100vh;background:var(--bg)}.side{width:246px;background:var(--dark);flex-shrink:0;padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}.side-brand{padding:6px 12px 18px}.side-brand .wordmark{color:#fff}.side-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;cursor:pointer;color:rgba(255,255,255,.62);font-size:.89rem;font-weight:700;transition:.15s}.side-item:hover{background:rgba(255,255,255,.06);color:#fff}.side-item.active{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 4px 14px rgba(237,36,39,.3)}.side-foot{margin-top:auto;padding-top:14px}.side-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:rgba(255,255,255,.05)}.side-av{width:34px;height:34px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900}.side-uname{font-size:.8rem;font-weight:800;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.side-out{font-size:.7rem;color:rgba(255,255,255,.45);cursor:pointer}
+.main{flex:1;padding:32px 36px;overflow:auto}.dpane{display:none}.dpane.on{display:block;animation:up .25s}.dh{font-family:'Barlow Condensed';font-size:2rem;font-weight:800;margin-bottom:4px}.dsub{font-size:.9rem;color:#999;margin-bottom:26px}.dcard{margin-bottom:18px}.dcard h3{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:16px}
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f3f3f3;font-size:.9rem}.kv:last-child{border-bottom:none}.kv .k{color:#999}.kv .v{font-weight:800}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:900;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em}.pill.active{background:#f0fdf4;color:var(--green);border:1px solid rgba(74,222,128,.4)}.pill.inactive{background:var(--soft);color:var(--red2);border:1px solid rgba(237,36,39,.3)}.pill.new{background:var(--soft);color:var(--red)}.pill.contacted{background:#eff6ff;color:var(--blue)}.pill.showing{background:#fffbeb;color:var(--gold)}.pill.closed{background:#f0fdf4;color:var(--green)}
+.tbl{width:100%;border-collapse:collapse}.tbl th{text-align:left;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#aaa;padding:10px 12px;border-bottom:1.5px solid #f0f0f0}.tbl td{padding:13px 12px;border-bottom:1px solid #f5f5f5;font-size:.86rem;color:#333}.tbl tr{cursor:pointer}.tbl tr:hover td{background:#fafafa}.empty{text-align:center;padding:42px 20px;color:#bbb}.empty .ico{font-size:2.4rem;margin-bottom:10px}.mini-btn{font-size:.75rem;font-weight:800;padding:7px 11px;border-radius:8px;border:1.5px solid var(--line);background:#fff;cursor:pointer;color:#555}.mini-btn:hover{border-color:var(--red);color:var(--red)}
+.media-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.media-prev{width:92px;height:92px;border-radius:18px;background:var(--soft);border:2px dashed rgba(237,36,39,.28);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--red);overflow:hidden}.media-prev.logo{border-radius:16px;background:#fafafa;color:#999}.media-prev img{width:100%;height:100%;object-fit:cover}.req-list{background:#fff;border:1.5px solid #f0f0f0;border-radius:12px;padding:12px 14px;margin:-8px 0 14px;color:#777;font-size:.8rem;line-height:1.55}.req-list strong{color:#111}.listing-card{border:1.5px solid #f0f0f0;border-radius:16px;padding:16px;margin-bottom:10px;background:#fff}.listing-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.listing-price{font-family:'Barlow Condensed';font-size:1.6rem;font-weight:800;color:var(--red)}
+.preview-page{background:#fff;border-radius:22px;overflow:hidden;border:1.5px solid #eee;box-shadow:0 8px 30px rgba(0,0,0,.08)}.preview-hero{background:var(--dark);padding:34px;color:#fff;position:relative;overflow:hidden}.preview-hero:after{content:'';position:absolute;right:-80px;top:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(237,36,39,.35),transparent 70%)}.preview-content{position:relative;z-index:1}.preview-profile{display:flex;gap:16px;align-items:center}.preview-av{width:78px;height:78px;border-radius:50%;background:rgba(237,36,39,.18);border:2px solid rgba(237,36,39,.45);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-size:2rem;font-weight:800}.preview-title{font-family:'Barlow Condensed';font-size:2.1rem;font-weight:800;line-height:1}.preview-sub{color:rgba(255,255,255,.65);font-size:.9rem;margin-top:4px}.preview-body{padding:26px}.share-card{background:#fff;border:1.5px solid #eee;border-radius:18px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;padding:14px 22px;border-radius:14px;font-size:.86rem;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:9999;opacity:0;transition:.3s;max-width:90vw}.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+@media(max-width:860px){.grid3,.steps{grid-template-columns:1fr 1fr}.side{position:fixed;left:-260px;transition:.3s;z-index:100;box-shadow:0 0 40px rgba(0,0,0,.3)}.side.open{left:0}.main{padding:20px}.hero h1{font-size:2.7rem}}
+@media(max-width:600px){.grid3,.grid2,.steps,.row2{grid-template-columns:1fr}.nav-link{display:none}.hero h1{font-size:2.25rem}.preview-profile{align-items:flex-start}.tbl{font-size:.8rem}}
+</style>
+</head>
+<body>
+
+<div class="pg on" id="p-home">
+  <div class="nav"><div class="nav-in">
+    <div class="brand" onclick="go('home')"><div><div class="wordmark">H<em>°</em>METRY</div><div class="brand-tag">for realtors</div></div></div>
+    <div class="nav-actions">
+      <span class="nav-link" onclick="scrollToId('why')">Why Realtors</span>
+      <span class="nav-link" onclick="scrollToId('how')">How It Works</span>
+      <span class="nav-link" onclick="scrollToId('price')">Pricing</span>
+      <button class="btn-ghost" onclick="go('signin')">Sign In</button>
+      <button class="btn-pill" onclick="startSignup()">Create Realtor Page</button>
+    </div>
+  </div></div>
+
+  <div class="hero"><div class="hero-in">
+    <span class="hero-badge">● Realtor Partner Platform · Founding pricing $20/mo</span>
+    <h1>Give every buyer your own <em>homebuying readiness platform.</em></h1>
+    <p class="hero-sub">H°METRY helps Realtors turn home searches into better buyer conversations. Your clients can explore payment fit, understand readiness, and send homes they like directly to your Realtor inbox.</p>
+    <div class="hero-cta">
+      <button class="hero-primary" onclick="startSignup()">Create My Realtor Page</button>
+      <button class="hero-secondary" onclick="scrollToId('how')">See How It Works</button>
+    </div>
+  </div></div>
+
+  <div class="sec"><div class="wrap">
+    <div class="sec-eye">What Realtors Get</div>
+    <div class="sec-h">A branded buyer experience, not another generic lead form</div>
+    <p class="sec-sub">Each paying Realtor gets a custom H°METRY page they can share with buyers. Buyers can run educational readiness and payment scenarios, then send homes to the Realtor when they want help.</p>
+    <div class="grid3">
+      <div class="card hover"><div class="card-ico">🏡</div><h3>Custom Realtor Page</h3><p>Your headshot, brokerage, welcome message, service areas, brand color, and buyer call-to-action.</p></div>
+      <div class="card hover"><div class="card-ico">📥</div><h3>Buyer Home Inbox</h3><p>Listings buyers choose to share come into your dashboard with the property, payment, score, and notes.</p></div>
+      <div class="card hover"><div class="card-ico">📊</div><h3>Readiness Context</h3><p>See whether the buyer looks ready, building, or needs work before you spend time chasing the wrong home.</p></div>
+    </div>
+  </div></div>
+
+  <div class="sec alt" id="why"><div class="wrap">
+    <div class="sec-eye">Why It Matters</div>
+    <div class="sec-h">Move buyers from curious to ready</div>
+    <p class="sec-sub">Most buyers browse homes long before they talk to a lender or Realtor. H°METRY gives them a low-pressure way to understand payment fit and gives you a reason to start the right conversation.</p>
+    <div class="grid3">
+      <div class="card hover"><div class="card-ico">⚡</div><h3>Faster conversations</h3><p>Buyers send you the home they care about, along with the numbers they are looking at.</p></div>
+      <div class="card hover"><div class="card-ico">🎯</div><h3>Better buyer intent</h3><p>You are not guessing which homes matter. The buyer tells you what they are interested in.</p></div>
+      <div class="card hover"><div class="card-ico">🤝</div><h3>Realtor-first</h3><p>The buyer experience is branded around you, with H°METRY powering the education behind the scenes.</p></div>
+      <div class="card hover"><div class="card-ico">🧭</div><h3>No ZIP-code ownership</h3><p>This version is not about exclusive territories. Your value is your branded buyer readiness page.</p></div>
+      <div class="card hover"><div class="card-ico">🔒</div><h3>Compliance clear</h3><p>H°METRY is educational only. It is not an approval, preapproval, loan commitment, or lender replacement.</p></div>
+      <div class="card hover"><div class="card-ico">💬</div><h3>Easy to share</h3><p>Put your page in your bio, email signature, QR code, open house flyer, or buyer consultation message.</p></div>
+    </div>
+  </div></div>
+
+  <div class="sec" id="how"><div class="wrap">
+    <div class="sec-eye">How It Works</div>
+    <div class="sec-h">From signup to buyer share</div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><h4>Create your account</h4><p>Sign up and build your Realtor profile.</p></div>
+      <div class="step"><div class="step-n">2</div><h4>Subscribe</h4><p>Activate your custom Realtor page for $20/month.</p></div>
+      <div class="step"><div class="step-n">3</div><h4>Share your page</h4><p>Send buyers to your H°METRY link.</p></div>
+      <div class="step"><div class="step-n">4</div><h4>Receive homes</h4><p>Buyers share listings and readiness context to your inbox.</p></div>
+    </div>
+  </div></div>
+
+  <div class="sec alt"><div class="wrap">
+    <div class="sec-eye">Buyer Share Preview</div>
+    <div class="sec-h">This is the kind of context your inbox receives</div>
+    <div class="demo" style="max-width:520px;margin:0 auto">
+      <div class="demo-top"><div class="demo-av">JS</div><div><div class="demo-name">Jane Smith</div><div class="demo-sub">Jane Smith Realty · Powered by H°METRY</div></div></div>
+      <div class="demo-body">“I like this home. Can you help me figure out if it makes sense?”</div>
+      <div class="demo-box"><h4>Shared Home</h4><div class="demo-mini"><span>Address</span><strong>214 Riverbend Dr</strong></div><div class="demo-mini"><span>Price</span><strong>$385,000</strong></div><div class="demo-mini"><span>Estimated Payment</span><strong>$2,640/mo</strong></div><div class="demo-mini"><span>Readiness</span><span class="score">78</span></div></div>
+    </div>
+  </div></div>
+
+  <div class="sec" id="price"><div class="wrap">
+    <div class="sec-eye">Founding Partner Pricing</div>
+    <div class="sec-h">Start with a simple monthly subscription</div>
+    <div class="price-card">
+      <div class="price-flag">Founding</div>
+      <div class="price-name">Realtor Partner</div>
+      <div class="price-amt">$20<span>/mo</span></div>
+      <div class="price-note">Recurring until canceled. No ZIP-code billing. No territory claims.</div>
+      <ul class="price-feats">
+        <li>Custom Realtor H°METRY page</li>
+        <li>Buyer home-share inbox</li>
+        <li>Readiness score and payment context</li>
+        <li>Profile manager and public page preview</li>
+        <li>Stripe billing portal support</li>
+      </ul>
+      <button class="cta" onclick="startSignup()">Create My Realtor Page</button>
+    </div>
+  </div></div>
+
+  <div class="foot"><div class="wrap">
+    <div class="wordmark" style="color:#fff">H<em>°</em>METRY</div>
+    <div class="foot-disc">H°METRY is an educational homebuying readiness platform. H°METRY is not a lender, mortgage broker, real estate brokerage, credit reporting agency, underwriting system, mortgage application, or preapproval provider. Information is educational only and does not constitute loan approval, preapproval, financial advice, or a commitment to lend.</div>
+    <div class="foot-copy">© <span class="yr"></span> H°METRY. All rights reserved.</div>
+  </div></div>
+</div>
+
+<div class="pg" id="p-signin">
+  <div class="fhdr"><div class="bk" onclick="go('home')">‹</div><div class="wordmark">H<em>°</em>METRY</div><div class="brand-tag">realtor portal</div></div>
+  <div class="fbody"><div class="fform" style="max-width:430px">
+    <div class="eye">Realtor Portal</div><div class="qh">Welcome back</div><div class="qs">Sign in to manage your Realtor page and buyer inbox.</div>
+    <div class="err" id="si-err"></div>
+    <div class="iw"><label class="fl">Email</label><input type="email" id="si-email" placeholder="you@brokerage.com"></div>
+    <div class="iw"><label class="fl">Password</label><input type="password" id="si-pass" placeholder="••••••••"></div>
+    <button class="cta" onclick="doSignin()">Sign In</button>
+    <button class="muted-link" onclick="startSignup()">New here? Create Realtor account</button>
+  </div></div>
+</div>
+
+<div class="pg" id="p-signup">
+  <div class="fhdr"><div class="bk" onclick="go('home')">‹</div><div class="wordmark">H<em>°</em>METRY</div><div class="brand-tag">create realtor page</div></div>
+  <div class="fbody"><div class="fform">
+    <div class="eye">Step 1</div><div class="qh">Create your Realtor profile</div><div class="qs">This creates your account and drafts your public page. You can edit everything later from your dashboard.</div>
+    <div class="err" id="su-err"></div>
+    <div class="row2"><div class="iw"><label class="fl">First name</label><input id="su-first" placeholder="Jane"></div><div class="iw"><label class="fl">Last name</label><input id="su-last" placeholder="Smith"></div></div>
+    <div class="iw"><label class="fl">Email</label><input type="email" id="su-email" placeholder="jane@brokerage.com"></div>
+    <div class="row2"><div class="iw"><label class="fl">Password</label><input type="password" id="su-pass" placeholder="8+ chars, number, special character"></div><div class="iw"><label class="fl">Confirm password</label><input type="password" id="su-confirm" placeholder="Re-enter password"></div></div>
+    <div class="req-list"><strong>Password requirements:</strong> at least 8 characters, at least 1 number, and at least 1 special character like ! @ # $ %.</div>
+    <div class="iw"><label class="fl">Brokerage</label><input id="su-brokerage" placeholder="Jane Smith Realty"></div>
+    <div class="iw"><label class="fl">Preferred page slug</label><input id="su-slug" placeholder="homewithjane"></div>
+    <button class="cta" onclick="createAccount()">Create Account</button>
+  </div></div>
+</div>
+
+<div class="pg" id="p-subscribe">
+  <div class="fhdr"><div class="wordmark">H<em>°</em>METRY</div><div class="brand-tag">activation</div><div style="margin-left:auto"><button class="btn-ghost" onclick="signOut()">Sign out</button></div></div>
+  <div class="fbody"><div class="fform narrow">
+    <div class="card" style="text-align:center;padding:34px">
+      <div class="card-ico" style="margin:0 auto 16px">🚀</div>
+      <div class="qh">Activate your Realtor page</div>
+      <div class="qs">Your profile is saved. Subscribe to publish your page and unlock your buyer home-share inbox.</div>
+      <div class="price-amt" style="font-size:3rem">$20<span>/mo</span></div>
+      <button class="cta" onclick="subscribeNow()">Subscribe & Activate</button>
+      <button class="cta-sec" onclick="go('dashboard')">Preview Dashboard First</button>
+      <p style="font-size:.76rem;color:#aaa;line-height:1.5;margin-top:14px">Stripe integration note: replace <code>subscribeNow()</code> with your Cloudflare Worker / Stripe Checkout endpoint.</p>
+    </div>
+  </div></div>
+</div>
+
+<div class="pg" id="p-dashboard">
+  <div class="dash">
+    <div class="side" id="side">
+      <div class="side-brand"><div class="wordmark">H<em>°</em>METRY</div><div class="brand-tag">realtor portal</div></div>
+      <div class="side-item active" data-pane="overview" onclick="dnav('overview')">📊 Overview</div>
+      <div class="side-item" data-pane="profile" onclick="dnav('profile')">👤 Profile Manager</div>
+      <div class="side-item" data-pane="preview" onclick="dnav('preview')">👁️ Public Page Preview</div>
+      <div class="side-item" data-pane="inbox" onclick="dnav('inbox')">📥 Buyer Inbox</div>
+      <div class="side-item" data-pane="listings" onclick="dnav('listings')">🏡 My Listings</div>
+      <div class="side-item" data-pane="billing" onclick="dnav('billing')">💳 Billing</div>
+      <div class="side-item" data-pane="settings" onclick="dnav('settings')">⚙️ Settings</div>
+      <div class="side-foot"><div class="side-user"><div class="side-av" id="side-av">R</div><div style="flex:1;overflow:hidden"><div class="side-uname" id="side-name">Realtor</div><div class="side-out" onclick="signOut()">Sign out</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="dpane on" id="pane-overview">
+        <div class="dh">Welcome back<span id="ov-name"></span></div>
+        <div class="dsub">Here is the state of your Realtor page and buyer inbox.</div>
+        <div class="grid2">
+          <div class="dcard"><h3>Public Page</h3><div class="kv"><span class="k">Status</span><span class="v" id="ov-status"></span></div><div class="kv"><span class="k">Link</span><span class="v" id="ov-link"></span></div></div>
+          <div class="dcard"><h3>Buyer Inbox</h3><div class="kv"><span class="k">New shares</span><span class="v" id="ov-new">0</span></div><div class="kv"><span class="k">Total shares</span><span class="v" id="ov-total">0</span></div></div>
+        </div>
+        <div class="dcard"><h3>What to do next</h3><p style="color:#777;line-height:1.55">Finish your profile, copy your public page link, and add it to your buyer consultation flow, bio, email signature, QR codes, and open house materials.</p></div>
+      </div>
+
+      <div class="dpane" id="pane-profile">
+        <div class="dh">Profile Manager</div><div class="dsub">Edit the details shown on your public Realtor page.</div><div class="ok" id="pf-ok"></div>
+        <div class="dcard"><h3>Images</h3>
+          <div class="grid2">
+            <div><label class="fl">Headshot</label><div class="media-row"><div class="media-prev" id="pf-headshot-prev">👤</div><div><button class="mini-btn" onclick="document.getElementById('pf-headshot').click()">Upload Headshot</button><input type="file" id="pf-headshot" accept="image/*" style="display:none" onchange="uploadProfileImage('headshotUrl',this)"><div class="upl-hint">Square image works best.</div></div></div></div>
+            <div><label class="fl">Company Logo</label><div class="media-row"><div class="media-prev logo" id="pf-logo-prev">🏢</div><div><button class="mini-btn" onclick="document.getElementById('pf-logo').click()">Upload Logo</button><input type="file" id="pf-logo" accept="image/*" style="display:none" onchange="uploadProfileImage('logoUrl',this)"><div class="upl-hint">Optional, but it makes the page feel branded.</div></div></div></div>
+          </div>
+        </div>
+        <div class="dcard"><h3>Basic Info</h3>
+          <div class="row2"><div class="iw"><label class="fl">First name</label><input id="pf-first"></div><div class="iw"><label class="fl">Last name</label><input id="pf-last"></div></div>
+          <div class="row2"><div class="iw"><label class="fl">Brokerage</label><input id="pf-brokerage"></div><div class="iw"><label class="fl">Title</label><input id="pf-title" placeholder="REALTOR®, Associate Broker, Team Lead"></div></div>
+          <div class="row2"><div class="iw"><label class="fl">License number</label><input id="pf-license" placeholder="Optional"></div><div class="iw"><label class="fl">Brand color</label><input id="pf-color" placeholder="#ed2427"></div></div>
+          <div class="iw"><label class="fl">Welcome message</label><input id="pf-welcome" placeholder="Use my H°METRY page to explore homes with confidence."></div>
+          <div class="iw"><label class="fl">Bio</label><textarea id="pf-bio" placeholder="Tell buyers who you help and how you work."></textarea></div>
+        </div>
+        <div class="dcard"><h3>Contact & Links</h3>
+          <div class="row2"><div class="iw"><label class="fl">Phone</label><input id="pf-phone"></div><div class="iw"><label class="fl">Email</label><input id="pf-email"></div></div>
+          <div class="row2"><div class="iw"><label class="fl">Website</label><input id="pf-website"></div><div class="iw"><label class="fl">Booking link</label><input id="pf-booking" placeholder="Calendly or appointment link"></div></div>
+          <div class="row2"><div class="iw"><label class="fl">Instagram</label><input id="pf-instagram"></div><div class="iw"><label class="fl">Facebook</label><input id="pf-facebook"></div></div>
+          <div class="iw"><label class="fl">Service areas</label><input id="pf-service" placeholder="North Augusta, Evans, Augusta, Aiken"></div>
+          <div class="iw"><label class="fl">Specialties</label><input id="pf-specialties" placeholder="First-time buyers, relocation, new construction, military, investment"></div>
+          <div class="iw"><label class="fl">Page slug</label><input id="pf-slug"></div>
+        </div>
+        <button class="cta" onclick="saveProfile()">Save Profile</button>
+      </div>
+
+      <div class="dpane" id="pane-preview">
+        <div class="dh">Public Page Preview</div><div class="dsub">This is the page your buyers will see.</div><div id="preview-host"></div>
+      </div>
+
+      <div class="dpane" id="pane-inbox">
+        <div class="dh">Buyer Inbox</div><div class="dsub">Listings and homes buyers choose to share with you.</div>
+        <div class="dcard" style="padding:0;overflow:hidden"><div id="inbox-host"></div></div>
+        <div id="detail-host"></div>
+      </div>
+
+      <div class="dpane" id="pane-listings">
+        <div class="dh">My Listings</div><div class="dsub">Add active listings to your Realtor page so buyers can run H°METRY against homes you already have for sale.</div>
+        <div class="dcard"><h3>Add Listing</h3>
+          <div class="row2"><div class="iw"><label class="fl">Property address</label><input id="li-address" placeholder="123 Main St, Augusta, GA"></div><div class="iw"><label class="fl">List price</label><input id="li-price" type="number" placeholder="385000"></div></div>
+          <div class="row2"><div class="iw"><label class="fl">Beds / Baths</label><input id="li-beds" placeholder="4 beds · 3 baths"></div><div class="iw"><label class="fl">Listing URL</label><input id="li-url" placeholder="https://..."></div></div>
+          <div class="iw"><label class="fl">Short description</label><textarea id="li-desc" placeholder="Short listing highlight for your public page."></textarea></div>
+          <button class="cta" onclick="addListing()">Add Listing</button>
+        </div>
+        <div class="dcard"><h3>Current Listings</h3><div id="listings-host"></div></div>
+      </div>
+
+      <div class="dpane" id="pane-billing">
+        <div class="dh">Billing</div><div class="dsub">Manage your Realtor Partner subscription.</div>
+        <div class="dcard">
+          <div class="kv"><span class="k">Plan</span><span class="v">Realtor Partner</span></div>
+          <div class="kv"><span class="k">Price</span><span class="v">$20/month</span></div>
+          <div class="kv"><span class="k">Status</span><span class="v" id="bill-status"></span></div>
+        </div>
+        <button class="cta" onclick="manageBilling()">Manage Billing</button>
+      </div>
+
+      <div class="dpane" id="pane-settings">
+        <div class="dh">Settings</div><div class="dsub">Account and visibility controls.</div>
+        <div class="dcard"><h3>Public Page Visibility</h3><button class="cta-sec" onclick="toggleVisibility()">Toggle Public Page Active / Hidden</button></div>
+        <div class="dcard"><h3>Developer Notes</h3><p style="color:#777;line-height:1.55">For production, connect this file to Firebase Auth, Firestore, Firebase Storage for headshots/logos, and Stripe Checkout / Billing Portal. The localStorage code below is only a working front-end scaffold.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/*
+  H°METRY REALTOR PORTAL — single-file v1 scaffold.
+
+  Production Firestore collections:
+  realtors/{uid}
+    uid, slug, firstName, lastName, brokerage, headshotUrl, logoUrl, brandColor,
+    welcomeMessage, bio, phone, email, website, socials, serviceAreas,
+    subscriptionStatus, stripeCustomerId, publicPageActive, createdAt, updatedAt
+
+  realtors/{uid}/inbox/{itemId}
+    buyerName, buyerEmail, buyerPhone, propertyAddress, purchasePrice,
+    estimatedPayment, readinessScore, readinessTier, readinessBreakdown,
+    buyerMessage, status, createdAt, updatedAt
+
+  Recommended routes:
+  realtor.hometry.app            -> this marketing/signup app
+  realtor.hometry.app/dashboard  -> dashboard after auth
+  hometry.app/realtor/:slug      -> public buyer-facing Realtor page
+*/
+
+var realtor = JSON.parse(localStorage.getItem('hometry_realtor_profile')||'null');
+var listings = JSON.parse(localStorage.getItem('hometry_realtor_listings')||'[]');
+var inbox = JSON.parse(localStorage.getItem('hometry_realtor_inbox')||'null') || [
+  {id:'demo1',buyerName:'Austin Carter',buyerEmail:'austin@example.com',buyerPhone:'706-555-0181',propertyAddress:'214 Riverbend Dr, North Augusta, SC',purchasePrice:385000,estimatedPayment:2640,readinessScore:78,readinessTier:'Almost Ready',buyerMessage:'I like this one. Can you help me decide if it makes sense?',status:'New',createdAt:'Today'},
+  {id:'demo2',buyerName:'Megan Harris',buyerEmail:'megan@example.com',buyerPhone:'',propertyAddress:'88 Willow Creek Ln, Evans, GA',purchasePrice:429900,estimatedPayment:2915,readinessScore:64,readinessTier:'Building',buyerMessage:'Payment feels a little high but I love the neighborhood.',status:'Contacted',createdAt:'Yesterday'}
+];
+
+document.querySelectorAll('.yr').forEach(function(el){el.textContent=new Date().getFullYear()});
+
+function go(page){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on')});
+  document.getElementById('p-'+page).classList.add('on');
+  if(page==='dashboard') renderDashboard();
+  window.scrollTo(0,0);
+}
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},2600);}
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function money(n){return '$'+Number(n||0).toLocaleString();}
+function slugify(s){return String(s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'my-realtor-page';}
+
+function startSignup(){go('signup')}
+function validPassword(pass){return pass.length>=8 && /[0-9]/.test(pass) && /[^A-Za-z0-9]/.test(pass);}
+function createAccount(){
+  var first=document.getElementById('su-first').value.trim(), last=document.getElementById('su-last').value.trim();
+  var email=document.getElementById('su-email').value.trim(), pass=document.getElementById('su-pass').value.trim(), confirm=document.getElementById('su-confirm').value.trim();
+  var brokerage=document.getElementById('su-brokerage').value.trim(), slug=slugify(document.getElementById('su-slug').value || (first+'-'+last));
+  var err=document.getElementById('su-err'); err.classList.remove('on');
+  if(!first||!last||!email||!pass||!confirm||!brokerage){err.textContent='Complete the required fields.';err.classList.add('on');return;}
+  if(pass!==confirm){err.textContent='Passwords do not match.';err.classList.add('on');return;}
+  if(!validPassword(pass)){err.textContent='Password must be 8+ characters with at least 1 number and 1 special character.';err.classList.add('on');return;}
+  realtor={uid:'demo_uid',firstName:first,lastName:last,email:email,brokerage:brokerage,slug:slug,brandColor:'#ed2427',welcomeMessage:'Use my H°METRY page to explore homes with confidence.',bio:'',phone:'',website:'',instagram:'',facebook:'',booking:'',serviceAreas:'',specialties:'',title:'',licenseNumber:'',headshotUrl:'',logoUrl:'',subscriptionStatus:'draft',publicPageActive:false,createdAt:new Date().toISOString()};
+  localStorage.setItem('hometry_realtor_profile',JSON.stringify(realtor));
+  go('subscribe');
+}
+function doSignin(){
+  if(!realtor){document.getElementById('si-err').textContent='No demo account found yet. Create a Realtor account first.';document.getElementById('si-err').classList.add('on');return;}
+  go(realtor.subscriptionStatus==='active'?'dashboard':'subscribe');
+}
+function signOut(){toast('Signed out');go('home')}
+function subscribeNow(){
+  // Production: POST to Stripe Checkout worker. On successful webhook, set subscriptionStatus='active' and publicPageActive=true.
+  realtor = realtor || {};
+  realtor.subscriptionStatus='active'; realtor.publicPageActive=true; realtor.updatedAt=new Date().toISOString();
+  localStorage.setItem('hometry_realtor_profile',JSON.stringify(realtor));
+  toast('Demo activated. Connect this to Stripe Checkout in production.');
+  go('dashboard');
+}
+function manageBilling(){toast('Connect this to your Stripe Billing Portal URL.');}
+
+function dnav(pane){
+  document.querySelectorAll('.side-item').forEach(function(i){i.classList.toggle('active',i.dataset.pane===pane)});
+  document.querySelectorAll('.dpane').forEach(function(p){p.classList.remove('on')});
+  document.getElementById('pane-'+pane).classList.add('on');
+  if(pane==='preview') renderPreview();
+  if(pane==='inbox') renderInbox();
+  if(pane==='listings') renderListings();
+}
+function renderDashboard(){
+  if(!realtor){go('home');return;}
+  document.getElementById('side-av').textContent=(realtor.firstName||'R')[0].toUpperCase();
+  document.getElementById('side-name').textContent=(realtor.firstName||'Realtor')+' '+(realtor.lastName||'');
+  document.getElementById('ov-name').textContent=', '+(realtor.firstName||'');
+  document.getElementById('ov-status').innerHTML = realtor.subscriptionStatus==='active' ? '<span class="pill active">Active</span>' : '<span class="pill inactive">Draft</span>';
+  document.getElementById('bill-status').innerHTML = realtor.subscriptionStatus==='active' ? '<span class="pill active">Active</span>' : '<span class="pill inactive">Inactive</span>';
+  var link='hometry.app/realtor/'+esc(realtor.slug||'my-page');
+  document.getElementById('ov-link').innerHTML='<span style="color:var(--red);font-weight:800">'+link+'</span>';
+  document.getElementById('ov-new').textContent=inbox.filter(function(x){return x.status==='New'}).length;
+  document.getElementById('ov-total').textContent=inbox.length;
+  fillProfile();
+  renderPreview();
+  renderInbox();
+  renderListings();
+}
+
+function fillProfile(){
+  ['first','last','brokerage','title','license','color','welcome','bio','phone','email','website','booking','instagram','facebook','service','specialties','slug'].forEach(function(k){
+    var el=document.getElementById('pf-'+k); if(!el) return;
+    var map={first:'firstName',last:'lastName',brokerage:'brokerage',title:'title',license:'licenseNumber',color:'brandColor',welcome:'welcomeMessage',bio:'bio',phone:'phone',email:'email',website:'website',booking:'booking',instagram:'instagram',facebook:'facebook',service:'serviceAreas',specialties:'specialties',slug:'slug'};
+    el.value=realtor[map[k]]||'';
+  });
+  setImagePreview('pf-headshot-prev', realtor.headshotUrl, '👤');
+  setImagePreview('pf-logo-prev', realtor.logoUrl, '🏢');
+}
+function saveProfile(){
+  var map={first:'firstName',last:'lastName',brokerage:'brokerage',title:'title',license:'licenseNumber',color:'brandColor',welcome:'welcomeMessage',bio:'bio',phone:'phone',email:'email',website:'website',booking:'booking',instagram:'instagram',facebook:'facebook',service:'serviceAreas',specialties:'specialties',slug:'slug'};
+  Object.keys(map).forEach(function(k){var el=document.getElementById('pf-'+k); if(el) realtor[map[k]]= k==='slug'?slugify(el.value):el.value.trim();});
+  realtor.updatedAt=new Date().toISOString();
+  localStorage.setItem('hometry_realtor_profile',JSON.stringify(realtor));
+  document.getElementById('pf-ok').textContent='Profile saved.';document.getElementById('pf-ok').classList.add('on');setTimeout(function(){document.getElementById('pf-ok').classList.remove('on')},2200);
+  renderDashboard();
+}
+function setImagePreview(id,url,fallback){var el=document.getElementById(id); if(!el)return; el.innerHTML=url?'<img src="'+esc(url)+'" alt="">':fallback;}
+function uploadProfileImage(field,input){var file=input.files&&input.files[0]; if(!file)return; var reader=new FileReader(); reader.onload=function(e){realtor[field]=e.target.result; realtor.updatedAt=new Date().toISOString(); localStorage.setItem('hometry_realtor_profile',JSON.stringify(realtor)); fillProfile(); renderPreview(); toast(field==='headshotUrl'?'Headshot added':'Logo added');}; reader.readAsDataURL(file);}
+function renderPreview(){
+  var name=esc((realtor.firstName||'Jane')+' '+(realtor.lastName||'Smith'));
+  var color=esc(realtor.brandColor||'#ed2427');
+  document.getElementById('preview-host').innerHTML =
+    '<div class="preview-page"><div class="preview-hero" style="border-bottom:4px solid '+color+'"><div class="preview-content">'+
+    '<div class="preview-profile"><div class="preview-av">'+(realtor.headshotUrl?'<img src="'+esc(realtor.headshotUrl)+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">':esc((realtor.firstName||'J')[0]+(realtor.lastName||'S')[0]))+'</div><div><div class="preview-title">'+name+'</div><div class="preview-sub">'+esc(realtor.title||'REALTOR®')+' · '+esc(realtor.brokerage||'Your Brokerage')+' · Powered by H°METRY</div></div></div>'+
+    '<p style="margin-top:18px;max-width:650px;color:rgba(255,255,255,.72);line-height:1.55">'+esc(realtor.welcomeMessage||'Use my H°METRY page to explore homes with confidence.')+'</p></div></div>'+
+    '<div class="preview-body"><div class="grid2"><div><h3 style="font-family:Barlow Condensed;font-size:1.8rem;margin-bottom:8px">Find homes that fit your payment.</h3><p style="color:#777;line-height:1.55">'+esc(realtor.bio||'Start with an educational readiness and payment check before you fall in love with the wrong home.')+'</p><p style="font-size:.82rem;color:#aaa;margin-top:12px">Service areas: '+esc(realtor.serviceAreas||'Add service areas')+'</p></div>'+
+    '<div class="share-card">'+(realtor.logoUrl?'<img src="'+esc(realtor.logoUrl)+'" style="max-height:44px;max-width:160px;object-fit:contain;margin-bottom:12px">':'')+'<label class="fl">Property Address</label><input placeholder="Enter a home address"><label class="fl" style="margin-top:12px">Purchase Price</label><input placeholder="$385,000"><button class="cta" style="margin-top:12px">Start H°METRY</button><p style="font-size:.72rem;color:#aaa;line-height:1.45;margin-top:10px">Educational only. Not an approval or preapproval.</p></div></div>'+renderPublicListings()+'</div></div>';
+}
+function renderPublicListings(){if(!listings.length)return ''; return '<div style="margin-top:24px"><h3 style="font-family:Barlow Condensed;font-size:1.6rem;margin-bottom:10px">Featured Listings</h3><div class="grid2">'+listings.map(function(x){return '<div class="listing-card"><div class="listing-top"><div><strong>'+esc(x.address)+'</strong><div style="color:#999;font-size:.82rem;margin-top:3px">'+esc(x.beds||'')+'</div></div><div class="listing-price">'+money(x.price)+'</div></div><p style="color:#777;font-size:.84rem;line-height:1.45;margin-top:10px">'+esc(x.desc||'')+'</p><button class="mini-btn" style="margin-top:10px">Run H°METRY</button></div>'}).join('')+'</div></div>';}
+function addListing(){var x={id:'li_'+Date.now(),address:document.getElementById('li-address').value.trim(),price:document.getElementById('li-price').value.trim(),beds:document.getElementById('li-beds').value.trim(),url:document.getElementById('li-url').value.trim(),desc:document.getElementById('li-desc').value.trim()}; if(!x.address||!x.price){toast('Add an address and list price.');return;} listings.unshift(x); localStorage.setItem('hometry_realtor_listings',JSON.stringify(listings)); ['li-address','li-price','li-beds','li-url','li-desc'].forEach(function(id){document.getElementById(id).value=''}); renderListings(); renderPreview(); toast('Listing added');}
+function deleteListing(id){listings=listings.filter(function(x){return x.id!==id}); localStorage.setItem('hometry_realtor_listings',JSON.stringify(listings)); renderListings(); renderPreview(); toast('Listing removed');}
+function renderListings(){var host=document.getElementById('listings-host'); if(!host)return; if(!listings.length){host.innerHTML='<div class="empty"><div class="ico">🏡</div><h4>No listings yet</h4><p>Add active listings and they will show on your public Realtor page preview.</p></div>';return;} host.innerHTML=listings.map(function(x){return '<div class="listing-card"><div class="listing-top"><div><strong>'+esc(x.address)+'</strong><div style="color:#999;font-size:.82rem;margin-top:3px">'+esc(x.beds||'')+'</div></div><div class="listing-price">'+money(x.price)+'</div></div><p style="color:#777;font-size:.84rem;line-height:1.45;margin-top:10px">'+esc(x.desc||'')+'</p><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">'+(x.url?'<button class="mini-btn" onclick="window.open(\''+esc(x.url)+'\',\'_blank\')">Open Listing</button>':'')+'<button class="mini-btn" onclick="deleteListing(\''+x.id+'\')">Remove</button></div></div>'}).join('');}
+function renderInbox(){
+  var host=document.getElementById('inbox-host');
+  if(!inbox.length){host.innerHTML='<div class="empty"><div class="ico">📥</div><h4>No buyer shares yet</h4><p>When buyers send homes from your page, they will appear here.</p></div>';return;}
+  host.innerHTML='<table class="tbl"><thead><tr><th>Buyer</th><th>Property</th><th>Price</th><th>Payment</th><th>Score</th><th>Status</th></tr></thead><tbody>'+
+    inbox.map(function(x){return '<tr onclick="openItem(\''+x.id+'\')"><td><strong>'+esc(x.buyerName)+'</strong><br><span style="color:#999">'+esc(x.createdAt)+'</span></td><td>'+esc(x.propertyAddress)+'</td><td>'+money(x.purchasePrice)+'</td><td>'+money(x.estimatedPayment)+'/mo</td><td><strong>'+x.readinessScore+'</strong><br><span style="color:#999">'+esc(x.readinessTier)+'</span></td><td>'+statusPill(x.status)+'</td></tr>'}).join('')+
+    '</tbody></table>';
+}
+function statusPill(s){var c=String(s||'New').toLowerCase().replace(/\s+/g,''); if(s==='Showing Scheduled') c='showing'; return '<span class="pill '+c+'">'+esc(s)+'</span>'}
+function openItem(id){
+  var x=inbox.find(function(i){return i.id===id}); if(!x) return;
+  document.getElementById('detail-host').innerHTML='<div class="dcard" style="margin-top:18px"><h3>Buyer Detail</h3>'+
+    '<div class="grid2"><div><div class="kv"><span class="k">Buyer</span><span class="v">'+esc(x.buyerName)+'</span></div><div class="kv"><span class="k">Email</span><span class="v">'+esc(x.buyerEmail)+'</span></div><div class="kv"><span class="k">Phone</span><span class="v">'+esc(x.buyerPhone||'Not provided')+'</span></div></div>'+
+    '<div><div class="kv"><span class="k">Property</span><span class="v">'+esc(x.propertyAddress)+'</span></div><div class="kv"><span class="k">Price</span><span class="v">'+money(x.purchasePrice)+'</span></div><div class="kv"><span class="k">Payment</span><span class="v">'+money(x.estimatedPayment)+'/mo</span></div></div></div>'+
+    '<div class="kv"><span class="k">Readiness Score</span><span class="v">'+x.readinessScore+' · '+esc(x.readinessTier)+'</span></div>'+
+    '<p style="margin-top:14px;color:#777;line-height:1.55"><strong>Buyer note:</strong> '+esc(x.buyerMessage)+'</p>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+['New','Contacted','Showing Scheduled','Under Contract','Closed','Archived'].map(function(s){return '<button class="mini-btn" onclick="setStatus(\''+x.id+'\',\''+s+'\')">'+s+'</button>'}).join('')+'</div></div>';
+}
+function setStatus(id,status){inbox=inbox.map(function(x){if(x.id===id)x.status=status;return x});localStorage.setItem('hometry_realtor_inbox',JSON.stringify(inbox));renderInbox();openItem(id);renderDashboard();toast('Status updated to '+status);}
+function toggleVisibility(){realtor.publicPageActive=!realtor.publicPageActive;localStorage.setItem('hometry_realtor_profile',JSON.stringify(realtor));toast(realtor.publicPageActive?'Public page active':'Public page hidden');renderDashboard();}
+</script>
+</body>
+</html>
